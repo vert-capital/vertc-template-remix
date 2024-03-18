@@ -43,7 +43,6 @@ export default function AbsenceTable() {
     retry: false,
     keepPreviousData: false,
     refetchOnWindowFocus: false,
-    refetchOnMount: true,
   });
 
   useEffect(() => {
