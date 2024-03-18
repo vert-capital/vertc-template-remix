@@ -1,0 +1,42 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  button,
+  input,
+  optgroup,
+  select,
+  textarea {
+    @apply font-display;
+  }
+}
+
+.menu-item {
+  position: relative;
+  padding-left: 30px; /* Espaço para a linha curva */
+}
+
+.menu-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%; /* A linha começa no meio do item */
+  width: 20px; /* Largura da curva */
+  height: 100%; /* Altura da curva - dependendo do seu layout, pode precisar de ajustes */
+  border: 2px solid black; /* Cor e espessura da linha */
+  border-color: transparent transparent transparent black; /* Apenas borda esquerda visível */
+  border-radius: 50px; /* Raio da curva */
+  transform: translateY(
+    -50%
+  ); /* Centraliza a curva verticalmente em relação ao item */
+}
+
+.menu-item:not(:first-child)::before {
+  height: 50%; /* Ajuste se os itens tiverem espaçamento variável */
+  top: 0; /* Começa no topo do item */
+}
+
+.menu-item:first-child::before {
+  content: none; /* O primeiro item não tem uma linha */
+}

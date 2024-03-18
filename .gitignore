@@ -1,0 +1,10 @@
+node_modules
+
+/.cache
+/build
+/public/build
+.env
+.env.development
+.env.quality-test
+.env.homolog
+.env.production
