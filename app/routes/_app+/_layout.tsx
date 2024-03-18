@@ -80,7 +80,9 @@ export default function LayoutIndex() {
                     ? '/resources/images/logo.svg'
                     : '/resources/images/logo-full.svg'
                 }
-                className={cn(isCollapsed ? 'h-6' : 'w-24 pl-2')}
+                height={isCollapsed ? 24 : 32}
+                width={isCollapsed ? 24 : 32}
+                className={cn(isCollapsed ? 'h-6 w-12' : 'h-10 w-24 pl-2')}
               />
             </Link>
           </div>
