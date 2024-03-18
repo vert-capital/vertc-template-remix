@@ -109,7 +109,7 @@ export default function LayoutIndex() {
         <NavbarApp
           isMobile={isMobile}
           setCollapsed={setCollapsed}
-          hideApps
+          hideApps={false}
           user={{
             id: _user.id,
             nomeCompleto: _user.nomeCompleto,

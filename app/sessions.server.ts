@@ -13,7 +13,7 @@ type SessionData = {
 const { getSession, commitSession, destroySession } =
   createCookieSessionStorage<SessionData, SessionFlashData>({
     cookie: {
-      name: 'vert-ausencias-session',
+      name: `{{FOLDER_NAME}}-session`,
       httpOnly: true,
       path: '/',
       sameSite: 'lax',
