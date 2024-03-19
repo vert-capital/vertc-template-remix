@@ -26,13 +26,9 @@ Depois basta rodar o projeto em modo de desenvolvimento:
 
 <h2>🔑 Autenticação</h2>
 
-Neste template estamos apontando para uma url publicada da API que utiliza SSO. Por isso, para que rode localmente, é necessário acessar o <a href="https://ausencias.vert-capital.app/">Sistema de Ausências</a> atual, copiar o TOKEN e REFRESH TOKEN do local storage.
+Neste template estamos apontando para uma url publicada da API que utiliza SSO. Por isso, para que rode localmente, foi fixado um token e um refresh token apenas no ambiente de desenvolvimento.
 
-Após isso, monte a url da seguinte forma:
-
-<pre>
-<code>http://localhost:3000/auth/[TOKEN]/[REFRESH_TOKEN]</code>
-</pre>
+No seu projeto, após configurar sua nova url de API, será necessário setar esses token no env local ou rodar sua API em localhost.
 
 <h2>🧐 Funcionalidades</h2>
 
