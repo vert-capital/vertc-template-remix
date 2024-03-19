@@ -31,7 +31,16 @@ const authenticated: Props<ResultProps> = (
           if (redirectTo) reject(redirect(redirectTo));
           else resolve({ user: undefined });
         } else {
-          reject(redirect(routes.api.login));
+          if (process.env.NODE_ENV === 'production') {
+            reject(redirect(routes.api.login));
+          } else {
+            // ATENÇÃO: Apenas para ambiente de desenvolvimento
+            reject(
+              redirect(
+                `/auth/${process.env.TOKEN_ONLY_DEV}/${process.env.REFRESH_TOKEN_ONLY_DEV}`
+              )
+            );
+          }
         }
       });
   });

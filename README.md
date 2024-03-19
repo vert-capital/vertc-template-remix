@@ -16,12 +16,22 @@ Instale as dependências do com o gerenciador de pacotes de sua preferência. Re
 <code>pnpm i</code>
 </pre>
 
-Crie e configure o arquivo `.env` na raiz do projeto com as variáveis de ambiente necessárias. Utilize o arquivo `.env.example` como base.
+Configure o arquivo `.env` na raiz do projeto com as variáveis de ambiente necessárias. Para esse template o arquivo vem preenchido com as variáveis de ambiente necessárias rodar a demonstração.
 
 Depois basta rodar o projeto em modo de desenvolvimento:
 
 <pre>
 <code>pnpm dev</code>
+</pre>
+
+<h2>🔑 Autenticação</h2>
+
+Neste template estamos apontando para uma url publicada da API que utiliza SSO. Por isso, para que rode localmente, é necessário acessar o <a href="https://ausencias.vert-capital.app/">Sistema de Ausências</a> atual, copiar o TOKEN e REFRESH TOKEN do local storage.
+
+Após isso, monte a url da seguinte forma:
+
+<pre>
+<code>http://localhost:3000/auth/[TOKEN]/[REFRESH_TOKEN]</code>
 </pre>
 
 <h2>🧐 Funcionalidades</h2>
