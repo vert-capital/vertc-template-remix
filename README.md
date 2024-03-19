@@ -82,3 +82,4 @@ Tecnologias utilizadas no projeto:
 - <a href="https://tailwindcss.com/docs/installation">TailwindCSS</a>
 - <a href="https://www.npmjs.com/package/@vert-capital/common">Utilitários VERT</a>
 - <a href="https://www.npmjs.com/package/@vert-capital/design-system-ui">Design System VERT</a>
+- <a href="https://lucide.dev/">Lucide (icones usado no Design System)</a>
