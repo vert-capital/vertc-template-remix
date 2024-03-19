@@ -30,6 +30,42 @@ Neste template estamos apontando para uma url publicada da API que utiliza SSO. 
 
 No seu projeto gerado, após configurar sua nova url de API, será necessário setar esses token no env local ou rodar sua API em localhost.
 
+<h2>🔑 Dica versionamento</h2>
+
+Como os projetos da VERT estão em sua maioria no bitbucket, fica uma dica para sincronizar pela primeira vez um novo projeto criado no bitbucket pela infra:
+
+<pre>
+<code>git init</code>
+</pre>
+
+<pre>
+<code>git add .</code>
+</pre>
+
+<pre>
+<code>git commit -m "First commit"</code>
+</pre>
+
+<pre>
+<code>git remote add origin [URL_SSH]</code>
+</pre>
+
+<pre>
+<code>git push -u origin master</code>
+</pre>
+
+OU
+
+<pre>
+<code>git push -u origin main</code>
+</pre>
+
+Pode ser necessário forçar o push caso o repositório ja tenha algum commit:
+
+<pre>
+<code>git push -u origin main --force</code>
+</pre>
+
 <h2>🧐 Funcionalidades</h2>
 
 Aqui estão alguns dos melhores recursos do projeto:
