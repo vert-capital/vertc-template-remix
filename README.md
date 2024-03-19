@@ -10,13 +10,13 @@ Utilize a documentação do <a href="https://ui.shadcn.com/">shadcn/ui</a> para 
 
 <h2>⚙️ Configuração</h2>
 
-Instale as dependências do com o gerenciador de pacotes de sua preferência. Recomendamos o uso do <a href="https://pnpm.io/">pnpm</a>.
+Instale as dependências com o gerenciador de pacotes de sua preferência. Recomendamos o uso do <a href="https://pnpm.io/">pnpm</a>.
 
 <pre>
 <code>pnpm i</code>
 </pre>
 
-Configure o arquivo `.env` na raiz do projeto com as variáveis de ambiente necessárias. Para esse template o arquivo vem preenchido com as variáveis de ambiente necessárias rodar a demonstração.
+Configure o arquivo `.env` na raiz do projeto com as variáveis de ambiente necessárias. Para esse template o arquivo vem preenchido com as variáveis de ambiente necessárias para rodar a demonstração.
 
 Depois basta rodar o projeto em modo de desenvolvimento:
 
@@ -26,7 +26,7 @@ Depois basta rodar o projeto em modo de desenvolvimento:
 
 <h2>🔑 Autenticação</h2>
 
-Neste template estamos apontando para uma url publicada da API que utiliza SSO. Por isso, para que rode localmente, foi utilizado variáveis de ambiente local setando o token e o refresh token. ATENÇÃO: Faça isso apenas no seu ambiente de local desenvolvimento.
+Neste template estamos apontando para uma url publicada da API que utiliza SSO. Por isso, para que rode localmente, foi utilizado variáveis de ambiente local para TOKEN_ONLY_DEV e REFRESH_TOKEN_ONLY_DEV. ATENÇÃO: Use essas variáveis apenas no seu ambiente de local desenvolvimento, caso precise.
 
 No seu projeto gerado, após configurar sua nova url de API, será necessário setar esses token no env local ou rodar sua API em localhost.
 
