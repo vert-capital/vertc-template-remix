@@ -26,7 +26,7 @@ Depois basta rodar o projeto em modo de desenvolvimento:
 
 <h2>🔑 Autenticação</h2>
 
-Neste template estamos apontando para uma url publicada da API que utiliza SSO. Por isso, para que rode localmente, foi utilizado variáveis de ambiente local para TOKEN_ONLY_DEV e REFRESH_TOKEN_ONLY_DEV. ATENÇÃO: Use essas variáveis apenas no seu ambiente de local desenvolvimento, caso precise.
+Neste template estamos apontando para uma url publicada da API que utiliza SSO. Por isso, para que rode localmente, foi utilizado variáveis de ambiente local para TOKEN_ONLY_DEV e REFRESH_TOKEN_ONLY_DEV. ATENÇÃO: Use essas variáveis apenas no seu ambiente local de desenvolvimento, caso precise.
 
 No seu projeto gerado, após configurar sua nova url de API, será necessário setar esses token no env local ou rodar sua API em localhost.
 
