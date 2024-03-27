@@ -1,3 +1,4 @@
 export default {
-  absenceList: 'absence-list',
+  absenceList: "absence-list",
+  absenceNew: "absence-new",
 };

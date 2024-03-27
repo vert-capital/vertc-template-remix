@@ -1,6 +1,6 @@
-import api from '~/common/api.server';
-import { AbsenceTableModel } from '~/models/absence.model';
-import { TableResponseModel } from '~/models/table.model';
+import api from "~/common/api.server";
+import { AbsenceDetailModel, AbsenceTableModel } from "~/models/absence.model";
+import { TableResponseModel } from "~/models/table.model";
 
 export class AbsenceService {
   async list(request: Request): Promise<TableResponseModel<AbsenceTableModel>> {
@@ -23,11 +23,29 @@ export class AbsenceService {
   }: {
     id: string;
     request: Request;
-  }): Promise<AbsenceTableModel> {
-    const response = await api<AbsenceTableModel>(
+  }): Promise<AbsenceDetailModel> {
+    const response = await api<AbsenceDetailModel>(
       `/absence/requests/${id}`,
       request
     );
-    return new AbsenceTableModel(response);
+    return new AbsenceDetailModel(response);
+  }
+
+  async new({ request }: { request: Request }): Promise<string> {
+    // const response = await api<AbsenceDetailModel>(
+    //   `/absence/requests/new`,
+    //   request
+    // );
+    // return new AbsenceDetailModel(response);
+    return "Solicitação cadastrada com sucesso!";
+  }
+
+  async update({ request }: { request: Request }): Promise<string> {
+    // const response = await api<AbsenceDetailModel>(
+    //   `/absence/requests/new`,
+    //   request
+    // );
+    // return new AbsenceDetailModel(response);
+    return "Solicitação atualizada com sucesso!";
   }
 }
