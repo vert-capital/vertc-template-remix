@@ -16,9 +16,12 @@ import {
   Input,
   SelectBasic,
   Separator,
+  sonner,
 } from "@vert-capital/design-system-ui";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import apiClient from "~/common/api.client";
+import routes from "~/common/routes";
 import { AbsenceSchema, TAbsenceFilter } from "~/models/absence.model";
 import { AbsenceService } from "~/services/absence.service";
 
@@ -56,6 +59,17 @@ export default function AbsenceDetail() {
     },
   });
 
+  const onSubmit = async () => {
+    try {
+      const res = await apiClient(`${routes.api.absences.edit}`, {
+        method: "GET",
+      });
+      if (res) sonner.toast("Solicitação atualizada com sucesso!");
+    } catch (error: any) {
+      sonner.toast("Erro na solicitação.");
+    }
+  };
+
   return (
     <>
       <div className="w-full flex flex-col justify-center items-center pt-3 pb-5 space-y-2">
@@ -82,7 +96,7 @@ export default function AbsenceDetail() {
       </div>
       <Separator className="mb-4" />
       <Form {...form}>
-        <form className="space-y-6">
+        <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
           <div className="w-full h-auto bg-transparent flex flex-col justify-start items-start">
             <Card className="w-full">
               <CardContent className="space-y-4 flex flex-col justify-start items-start">
@@ -213,7 +227,7 @@ export default function AbsenceDetail() {
                   Cancelar
                 </Button>
               )}
-              {isEditing && <Button type="button">Salvar</Button>}
+              {isEditing && <Button type="submit">Salvar</Button>}
             </div>
           </div>
         </form>
