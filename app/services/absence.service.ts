@@ -31,21 +31,19 @@ export class AbsenceService {
     return new AbsenceDetailModel(response);
   }
 
-  async new({ request }: { request: Request }): Promise<string> {
+  async new(request: Request): Promise<void> {
     // const response = await api<AbsenceDetailModel>(
     //   `/absence/requests/new`,
     //   request
     // );
     // return new AbsenceDetailModel(response);
-    return "Solicitação cadastrada com sucesso!";
   }
 
-  async update({ request }: { request: Request }): Promise<string> {
+  async update(request: Request): Promise<void> {
     // const response = await api<AbsenceDetailModel>(
     //   `/absence/requests/new`,
     //   request
     // );
     // return new AbsenceDetailModel(response);
-    return "Solicitação atualizada com sucesso!";
   }
 }
