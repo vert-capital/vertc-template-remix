@@ -15,6 +15,7 @@ import {
   Input,
   SelectBasic,
   Separator,
+  sonner,
 } from "@vert-capital/design-system-ui";
 import { useForm } from "react-hook-form";
 import apiClient from "~/common/api.client";
@@ -44,20 +45,16 @@ export default function AbsenceNew() {
     },
   });
 
-  const loadData = () => {
-    const url = `${routes.api.absences.new}`;
-    return apiClient<string>(url);
+  const onSubmit = async () => {
+    try {
+      const res = await apiClient(`${routes.api.absences.new}`, {
+        method: "GET",
+      });
+      if (res) sonner.toast("Solicitação cadastrada com sucesso!");
+    } catch (error: any) {
+      sonner.toast("Erro na solicitação.");
+    }
   };
-
-  // const onSubmit = (formData: TAbsenceFilter) => {
-  //   useQuery({
-  //     queryKey: [queryKey.absenceNew],
-  //     queryFn: loadData,
-  //     retry: false,
-  //     keepPreviousData: false,
-  //     refetchOnWindowFocus: false,
-  //   });
-  // };
 
   return (
     <>
@@ -78,7 +75,7 @@ export default function AbsenceNew() {
       </div>
       <Separator className="mb-4" />
       <Form {...form}>
-        <form className="space-y-6">
+        <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
           <div className="w-full h-auto bg-transparent flex flex-col justify-start items-start">
             <Card className="w-full">
               <CardContent className="space-y-4 flex flex-col justify-start items-start">
