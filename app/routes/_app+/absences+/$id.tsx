@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { json, type LoaderFunctionArgs } from "@remix-run/node";
-import { useLoaderData, useNavigate } from "@remix-run/react";
+import { useFetcher, useLoaderData, useNavigate } from "@remix-run/react";
+import { handleError } from "@vert-capital/common";
 import {
   Button,
   Card,
@@ -16,10 +17,17 @@ import {
   Input,
   SelectBasic,
   Separator,
+  sonner,
 } from "@vert-capital/design-system-ui";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { AbsenceSchema, TAbsenceFilter } from "~/models/absence.model";
+import type { z } from "zod";
+import apiClient from "~/common/api.client";
+import {
+  AbsencePostModel,
+  AbsenceSchema,
+  TAbsenceFilter,
+} from "~/models/absence.model";
 import { AbsenceService } from "~/services/absence.service";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
@@ -32,6 +40,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 }
 
 export default function AbsenceDetail() {
+  const fetcher = useFetcher();
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const requestOptions = [{ value: "5", label: "Day-off (Aniversário)" }];
   const managerOptions = [{ value: "127", label: "Thiago Freitas" }];
@@ -55,6 +64,27 @@ export default function AbsenceDetail() {
       data: { from: new Date(data.dataInicio), to: new Date(data.dataFim) },
     },
   });
+
+  const onSubmit = async (values: z.infer<typeof AbsenceSchema>) => {
+    try {
+      const formData = new FormData();
+
+      Object.entries(values).forEach(([key, value]: any) => {
+        if (key === "data") {
+          formData.append("dataInicio", value.from);
+          formData.append("dataFim", value.to);
+        }
+        formData.append(key, value);
+      });
+      await apiClient<AbsencePostModel>(`/api/absences/${data.id}/edit`, {
+        method: "POST",
+        body: formData,
+      });
+      sonner.toast("Solicitação atualizada com sucesso!");
+    } catch (error: any) {
+      sonner.toast(handleError(error).message);
+    }
+  };
 
   return (
     <>
@@ -82,7 +112,7 @@ export default function AbsenceDetail() {
       </div>
       <Separator className="mb-4" />
       <Form {...form}>
-        <form className="space-y-6">
+        <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
           <div className="w-full h-auto bg-transparent flex flex-col justify-start items-start">
             <Card className="w-full">
               <CardContent className="space-y-4 flex flex-col justify-start items-start">
@@ -130,7 +160,6 @@ export default function AbsenceDetail() {
                     />
                     <FormField
                       control={form.control}
-                      disabled={!isEditing}
                       name="tipo"
                       render={({ field }) => (
                         <FormItem>
@@ -141,6 +170,7 @@ export default function AbsenceDetail() {
                               placeholder={"Selecionar solicitação"}
                               options={requestOptions} // option default
                               disabledClear
+                              disabled={!isEditing}
                             />
                           </FormControl>
                           <FormMessage />
@@ -149,7 +179,6 @@ export default function AbsenceDetail() {
                     />
                     <FormField
                       control={form.control}
-                      disabled={!isEditing}
                       name="gestor"
                       render={({ field }) => (
                         <FormItem>
@@ -160,6 +189,7 @@ export default function AbsenceDetail() {
                               placeholder={"Selecionar gestor"}
                               options={managerOptions} // option default
                               disabledClear
+                              disabled={!isEditing}
                             />
                           </FormControl>
                           <FormMessage />
@@ -168,7 +198,6 @@ export default function AbsenceDetail() {
                     />
                     <FormField
                       control={form.control}
-                      disabled={!isEditing}
                       name="time"
                       render={({ field }) => (
                         <FormItem>
@@ -179,6 +208,7 @@ export default function AbsenceDetail() {
                               placeholder={"Selecionar time"}
                               options={teamOptions} // option default
                               disabledClear
+                              disabled={!isEditing}
                             />
                           </FormControl>
                           <FormMessage />
@@ -187,13 +217,15 @@ export default function AbsenceDetail() {
                     />
                     <FormField
                       control={form.control}
-                      disabled={!isEditing}
                       name="data"
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Data</FormLabel>
                           <FormControl>
-                            <DateRangePicker field={field} />
+                            <DateRangePicker
+                              field={field}
+                              disabled={!isEditing}
+                            />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -213,7 +245,7 @@ export default function AbsenceDetail() {
                   Cancelar
                 </Button>
               )}
-              {isEditing && <Button type="button">Salvar</Button>}
+              {isEditing && <Button type="submit">Salvar</Button>}
             </div>
           </div>
         </form>

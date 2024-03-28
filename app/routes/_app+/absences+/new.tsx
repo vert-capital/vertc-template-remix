@@ -1,5 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "@remix-run/react";
+import { handleError } from "@vert-capital/common";
 import {
   Button,
   Card,
@@ -15,11 +16,16 @@ import {
   Input,
   SelectBasic,
   Separator,
+  sonner,
 } from "@vert-capital/design-system-ui";
 import { useForm } from "react-hook-form";
+import type { z } from "zod";
 import apiClient from "~/common/api.client";
-import routes from "~/common/routes";
-import { AbsenceSchema, TAbsenceFilter } from "~/models/absence.model";
+import {
+  AbsencePostModel,
+  AbsenceSchema,
+  TAbsenceFilter,
+} from "~/models/absence.model";
 
 export default function AbsenceNew() {
   const requestOptions = [{ value: "5", label: "Day-off (Aniversário)" }];
@@ -44,20 +50,26 @@ export default function AbsenceNew() {
     },
   });
 
-  const loadData = () => {
-    const url = `${routes.api.absences.new}`;
-    return apiClient<string>(url);
-  };
+  const onSubmit = async (values: z.infer<typeof AbsenceSchema>) => {
+    try {
+      const formData = new FormData();
 
-  // const onSubmit = (formData: TAbsenceFilter) => {
-  //   useQuery({
-  //     queryKey: [queryKey.absenceNew],
-  //     queryFn: loadData,
-  //     retry: false,
-  //     keepPreviousData: false,
-  //     refetchOnWindowFocus: false,
-  //   });
-  // };
+      Object.entries(values).forEach(([key, value]: any) => {
+        if (key === "data") {
+          formData.append("dataInicio", value.from);
+          formData.append("dataFim", value.to);
+        }
+        formData.append(key, value);
+      });
+      await apiClient<AbsencePostModel>("/api/absences/new", {
+        method: "POST",
+        body: formData,
+      });
+      sonner.toast("Solicitação cadastrada com sucesso!");
+    } catch (error: any) {
+      sonner.toast(handleError(error).message);
+    }
+  };
 
   return (
     <>
@@ -78,7 +90,7 @@ export default function AbsenceNew() {
       </div>
       <Separator className="mb-4" />
       <Form {...form}>
-        <form className="space-y-6">
+        <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
           <div className="w-full h-auto bg-transparent flex flex-col justify-start items-start">
             <Card className="w-full">
               <CardContent className="space-y-4 flex flex-col justify-start items-start">

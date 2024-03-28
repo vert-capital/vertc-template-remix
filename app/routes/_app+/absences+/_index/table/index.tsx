@@ -1,4 +1,4 @@
-import { useSearchParams } from '@remix-run/react';
+import { Link, useSearchParams } from "@remix-run/react";
 import {
   Button,
   Card,
@@ -8,16 +8,16 @@ import {
   DataTable,
   Icons,
   cn,
-} from '@vert-capital/design-system-ui';
-import { useEffect, useState } from 'react';
-import { useQuery } from 'react-query';
-import apiClient from '~/common/api.client';
-import queryKey from '~/common/queryKey';
-import routes from '~/common/routes';
-import { AbsenceTableModel } from '~/models/absence.model';
-import { TableResponseModel } from '~/models/table.model';
-import { columns } from './columns';
-import { SubRow } from './sub-row';
+} from "@vert-capital/design-system-ui";
+import { useEffect, useState } from "react";
+import { useQuery } from "react-query";
+import apiClient from "~/common/api.client";
+import queryKey from "~/common/queryKey";
+import routes from "~/common/routes";
+import { AbsenceTableModel } from "~/models/absence.model";
+import { TableResponseModel } from "~/models/table.model";
+import { columns } from "./columns";
+import { SubRow } from "./sub-row";
 
 export default function AbsenceTable() {
   const [searchParams] = useSearchParams();
@@ -25,8 +25,8 @@ export default function AbsenceTable() {
 
   const loadData = () => {
     const query = new URLSearchParams();
-    if (page > 0) query.set('page', page.toString());
-    else query.delete('page');
+    if (page > 0) query.set("page", page.toString());
+    else query.delete("page");
     const url = `${routes.api.absences.list}?${query.toString()}`;
     return apiClient<TableResponseModel<AbsenceTableModel>>(url);
   };
@@ -46,8 +46,8 @@ export default function AbsenceTable() {
   });
 
   useEffect(() => {
-    if (searchParams.has('page')) {
-      const page = searchParams.get('page');
+    if (searchParams.has("page")) {
+      const page = searchParams.get("page");
       if (page) setPage(parseInt(page));
     }
   }, []);
@@ -61,19 +61,21 @@ export default function AbsenceTable() {
         <div className="flex justify-end items-center space-x-3">
           <Button
             type="button"
-            variant={'secondary'}
-            size={'icon'}
+            variant={"secondary"}
+            size={"icon"}
             title="Atualizar lista"
             onClick={() => refetch()}
           >
             <Icons.RefreshCcw
-              className={cn('h-4 w-4', { 'animate-fast-spin': isRefetching })}
+              className={cn("h-4 w-4", { "animate-fast-spin": isRefetching })}
             />
           </Button>
-          <Button type="button" size={'default'}>
-            Nova Solicitação
-            <Icons.Plus className="h-4 w-4 ml-2" />
-          </Button>
+          <Link to={routes.absence.new}>
+            <Button type="button" size={"default"}>
+              Nova Solicitação
+              <Icons.Plus className="h-4 w-4 ml-2" />
+            </Button>
+          </Link>
         </div>
       </CardHeader>
       <CardContent>
