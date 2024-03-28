@@ -22,7 +22,12 @@ import {
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import type { z } from "zod";
-import { AbsenceSchema, TAbsenceFilter } from "~/models/absence.model";
+import apiClient from "~/common/api.client";
+import {
+  AbsencePostModel,
+  AbsenceSchema,
+  TAbsenceFilter,
+} from "~/models/absence.model";
 import { AbsenceService } from "~/services/absence.service";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
@@ -71,9 +76,9 @@ export default function AbsenceDetail() {
         }
         formData.append(key, value);
       });
-      fetcher.submit(formData, {
-        action: `/api/absences/${data.id}/edit`,
-        method: "post",
+      await apiClient<AbsencePostModel>(`/api/absences/${data.id}/edit`, {
+        method: "POST",
+        body: formData,
       });
       sonner.toast("Solicitação atualizada com sucesso!");
     } catch (error: any) {
