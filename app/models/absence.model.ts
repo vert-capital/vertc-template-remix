@@ -1,4 +1,5 @@
 import { z } from "zod";
+
 export class AbsenceTypeModel {
   id: number;
   nome: string;
@@ -102,5 +103,35 @@ export class AbsenceDetailModel {
     this.time = data?.team?.id.toString() || "";
     this.dataInicio = data?.start_date_formated || "";
     this.dataFim = data?.end_date_formated || "";
+  }
+}
+
+export class AbsencePostModel extends AbsenceDetailModel {
+  constructor(data?: any) {
+    super();
+    this.nome = data?.nome || "";
+    this.email = data?.email || "";
+    this.tipo = data?.tipo || "";
+    this.gestor = data?.gestor || "";
+    this.time = data?.time || "";
+    this.dataInicio = data?.dataInicio || "";
+    this.dataFim = data?.dataFim || "";
+  }
+
+  validate() {
+    AbsenceSchema.parse(this);
+    return this;
+  }
+
+  toJson() {
+    return {
+      nome: this.nome,
+      email: this.email,
+      time: this.time,
+      gestor: this.gestor,
+      tipo: this.tipo,
+      dataInicio: this.dataInicio,
+      dataFim: this.dataFim,
+    };
   }
 }
