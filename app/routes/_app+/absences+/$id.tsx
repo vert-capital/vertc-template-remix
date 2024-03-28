@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { json, type LoaderFunctionArgs } from "@remix-run/node";
-import { useLoaderData, useNavigate } from "@remix-run/react";
+import { useFetcher, useLoaderData, useNavigate } from "@remix-run/react";
 import {
   Button,
   Card,
@@ -20,8 +20,7 @@ import {
 } from "@vert-capital/design-system-ui";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import apiClient from "~/common/api.client";
-import routes from "~/common/routes";
+import type { z } from "zod";
 import { AbsenceSchema, TAbsenceFilter } from "~/models/absence.model";
 import { AbsenceService } from "~/services/absence.service";
 
@@ -35,6 +34,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 }
 
 export default function AbsenceDetail() {
+  const fetcher = useFetcher();
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const requestOptions = [{ value: "5", label: "Day-off (Aniversário)" }];
   const managerOptions = [{ value: "127", label: "Thiago Freitas" }];
@@ -59,12 +59,22 @@ export default function AbsenceDetail() {
     },
   });
 
-  const onSubmit = async () => {
+  const onSubmit = async (values: z.infer<typeof AbsenceSchema>) => {
     try {
-      const res = await apiClient(`${routes.api.absences.edit}`, {
-        method: "GET",
+      const formData = new FormData();
+
+      Object.entries(values).forEach(([key, value]: any) => {
+        if (key === "data") {
+          formData.append("dataInicio", value.from);
+          formData.append("dataFim", value.to);
+        }
+        formData.append(key, value);
       });
-      if (res) sonner.toast("Solicitação atualizada com sucesso!");
+      fetcher.submit(formData, {
+        action: `/api/absences/${data.id}/edit`,
+        method: "post",
+      });
+      sonner.toast("Solicitação atualizada com sucesso!");
     } catch (error: any) {
       sonner.toast("Erro na solicitação.");
     }
@@ -144,7 +154,6 @@ export default function AbsenceDetail() {
                     />
                     <FormField
                       control={form.control}
-                      disabled={!isEditing}
                       name="tipo"
                       render={({ field }) => (
                         <FormItem>
@@ -155,6 +164,7 @@ export default function AbsenceDetail() {
                               placeholder={"Selecionar solicitação"}
                               options={requestOptions} // option default
                               disabledClear
+                              disabled={!isEditing}
                             />
                           </FormControl>
                           <FormMessage />
@@ -163,7 +173,6 @@ export default function AbsenceDetail() {
                     />
                     <FormField
                       control={form.control}
-                      disabled={!isEditing}
                       name="gestor"
                       render={({ field }) => (
                         <FormItem>
@@ -174,6 +183,7 @@ export default function AbsenceDetail() {
                               placeholder={"Selecionar gestor"}
                               options={managerOptions} // option default
                               disabledClear
+                              disabled={!isEditing}
                             />
                           </FormControl>
                           <FormMessage />
@@ -182,7 +192,6 @@ export default function AbsenceDetail() {
                     />
                     <FormField
                       control={form.control}
-                      disabled={!isEditing}
                       name="time"
                       render={({ field }) => (
                         <FormItem>
@@ -193,6 +202,7 @@ export default function AbsenceDetail() {
                               placeholder={"Selecionar time"}
                               options={teamOptions} // option default
                               disabledClear
+                              disabled={!isEditing}
                             />
                           </FormControl>
                           <FormMessage />
@@ -201,13 +211,15 @@ export default function AbsenceDetail() {
                     />
                     <FormField
                       control={form.control}
-                      disabled={!isEditing}
                       name="data"
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Data</FormLabel>
                           <FormControl>
-                            <DateRangePicker field={field} />
+                            <DateRangePicker
+                              field={field}
+                              disabled={!isEditing}
+                            />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
