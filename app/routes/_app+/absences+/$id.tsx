@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { json, type LoaderFunctionArgs } from "@remix-run/node";
 import { useFetcher, useLoaderData, useNavigate } from "@remix-run/react";
+import { handleError } from "@vert-capital/common";
 import {
   Button,
   Card,
@@ -76,7 +77,7 @@ export default function AbsenceDetail() {
       });
       sonner.toast("Solicitação atualizada com sucesso!");
     } catch (error: any) {
-      sonner.toast("Erro na solicitação.");
+      sonner.toast(handleError(error).message);
     }
   };
 

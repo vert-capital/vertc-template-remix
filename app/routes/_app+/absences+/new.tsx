@@ -1,5 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useFetcher, useNavigate } from "@remix-run/react";
+import { useNavigate } from "@remix-run/react";
+import { handleError } from "@vert-capital/common";
 import {
   Button,
   Card,
@@ -19,10 +20,14 @@ import {
 } from "@vert-capital/design-system-ui";
 import { useForm } from "react-hook-form";
 import type { z } from "zod";
-import { AbsenceSchema, TAbsenceFilter } from "~/models/absence.model";
+import apiClient from "~/common/api.client";
+import {
+  AbsencePostModel,
+  AbsenceSchema,
+  TAbsenceFilter,
+} from "~/models/absence.model";
 
 export default function AbsenceNew() {
-  const fetcher = useFetcher();
   const requestOptions = [{ value: "5", label: "Day-off (Aniversário)" }];
   const managerOptions = [{ value: "127", label: "Thiago Freitas" }];
   const teamOptions = [
@@ -56,13 +61,13 @@ export default function AbsenceNew() {
         }
         formData.append(key, value);
       });
-      fetcher.submit(formData, {
-        action: "/api/absences/new",
-        method: "post",
+      await apiClient<AbsencePostModel>("/api/absences/new", {
+        method: "POST",
+        body: formData,
       });
       sonner.toast("Solicitação cadastrada com sucesso!");
     } catch (error: any) {
-      sonner.toast("Erro na solicitação.");
+      sonner.toast(handleError(error).message);
     }
   };
 
